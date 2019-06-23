@@ -59,7 +59,7 @@ export const getRanking = functions.https.onCall(async (data, context) =>
             const val = x.val();
             console.log(val);
             
-            if (val.guid === query.guid)
+            if (query.guid !== null && query.guid !== '' && val.guid === query.guid)
             {
                 userIndex = val.rank - 1;
             }
@@ -71,7 +71,7 @@ export const getRanking = functions.https.onCall(async (data, context) =>
     });
 
     
-    if (userIndex === -1)
+    if (userIndex === -1 && query.guid !== null && query.guid !== '')
     {
         console.log("User not present. Adding to list");
         await ref.child(query.guid).once("value", function(snapshot)
